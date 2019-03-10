@@ -2,228 +2,133 @@ const Discord = require("discord.js");
 const client = new Discord.Client();
 const prefix = "$";
 
-const logs = require('./guildLogs.json');
-client.on('message',async message => {
-if(message.author.bot) return;
-if(message.channel.type === 'dm') return
-  const m = message.content.split(' ').slice(1);
-  var args = message.content.split(' ');
-  if(message.content.toLowerCase().startsWith(prefix + "settings")) {
-    if(!message.member.hasPermission("MANAGE_GUILD")) return message.channel.send(':negative_squared_cross_mark: » You dont have permissions');
-    if(!args[1] || args[1] && args[1] !== 'logs' && args[1] !== 'prefix' && args[1] !== 'sug') {
-      if(args[0] !== prefix + 'settings') return;
-      var aa;
-      if(!logs[message.guild.id]) aa = 'None';
-      if(logs[message.guild.id]) aa = logs[message.guild.id].channelName;
-      var setEmbed = new Discord.RichEmbed()
-      .setAuthor(message.author.username, message.author.avatarURL)
-      .setTitle(`Settings \`${message.guild.name}\``)
-      .addField(':exclamation: » Command', `\`Default\` ${prefix}\n\`Guild\` ${prefix}\n\`Syntax\` -settings prefix [new command]`,true)
-      .addField(':musical_note: » Suggestions', `\`Default\` ${prefix}\n\`Guild\` ${prefix}\n\`Syntax\` -settings sug [Room]`,true)
-      .addField(':hammer_pick: » Log', `\`Default\` None\n\`Guild\` ${aa}\n\`Syntax\` -settings logs [Room]`,true);
-      message.channel.send(setEmbed);
-    }
-    if(args[1] === 'logs') {
-      if(!args[2]) return message.channel.send(':negative_squared_cross_mark: » Write room name.');
-      if(!message.guild.channels.find('name', args[2])) return message.channel.send(':negative_squared_cross_mark: » Error');
-      message.channel.send(':white_check_mark: » Done');
-      logs[message.guild.id] = {
-        channelName: args[2],
-        channelId: message.guild.channels.find('name', args[2]).id
-      };
-      fs.writeFile('./src/guildLogs.json', JSON.stringify(logs, null ,1), (err) => {
-        if(err) message.channel.send(':negative_squared_cross_mark: » Error');
-      });
-    }
-    if(args[1] === 'sug') {
-       return message.channel.send(':negative_squared_cross_mark: » Soon');
-    }
-    if(args[1] === 'mprefix') {
-      return message.channel.send(':negative_squared_cross_mark: » Soon');
-    }
-}
+
+var cooldown = new Set();
+var points = {};
+client.on('message', async message => {
+	if(message.channel.type !== 'text') return;
+	
+	
+	var command = message.content.toLowerCase().split(" ")[0];
+	var args = message.content.toLowerCase().split(" ");
+	var userM = message.guild.member(message.mentions.users.first() || message.guild.members.find(m => m.id == args[1]));
+	  const embed  = new Discord.RichEmbed()
+.setDescription(`
+**لم يتم تسجيل أي نقطة حتى الأن **
+** أمثلة للأوامر: **
+**:small_orange_diamond:** $points ${message.author} 1 \`لتغيير نقاط شخص معين \`
+**:small_orange_diamond:** $points ${message.author} +1 \`لزيادة نقاط شخص معين\`
+**:small_orange_diamond:** $points ${message.author} -1 \`لأزالة نقطة من شخص معين \`
+**:small_orange_diamond:** $points ${message.author} 0 \`لتصفير نقاط شخص معين \`
+**:small_orange_diamond:** $points reset \`لتصفير جميع النقاط\``)
+.setFooter('Requested by '+message.author.username, message.author.avatarURL)
+.setColor(`#e60909`)
+  const error  = new Discord.RichEmbed()
+.setDescription(`
+**:x: | يجب كتابة الأمر بشكل صحيح. **
+** أمثلة للأوامر: **
+**:small_orange_diamond:** $points ${message.author} 1 \`لتغيير نقاط شخص معين \`
+**:small_orange_diamond:** $points ${message.author} +1 \`لزيادة نقاط شخص معين\`
+**:small_orange_diamond:** $points ${message.author} -1 \`لأزالة نقطة من شخص معين \`
+**:small_orange_diamond:** $points ${message.author} 0 \`لتصفير نقاط شخص معين \`
+**:small_orange_diamond:** $points reset \`لتصفير جميع النقاط\``)
+.setFooter('Requested by '+message.author.username, message.author.avatarURL)
+.setColor(`#e60909`)
+if(command == prefix + 'points') {
+	 
+		if(!message.guild.member(client.user).hasPermission('EMBED_LINKS')) return message.channel.send(':no_entry: | I dont have Embed Links permission.');
+		if(!args[1]) {
+			if(!points) return message.channel.send(embed);
+			var members = Object.values(points);
+			var memb = members.filter(m => m.points >= 1);
+			if(memb.length == 0) return message.channel.send(embed);
+			var x = 1;
+			let pointsTop = new Discord.RichEmbed()
+			.setAuthor('Points:')
+			.setColor('#FBFBFB')
+			.setDescription(memb.sort((second, first) => first.points > second.points).slice(0, 10).map(m => `**:small_blue_diamond:** <@${m.id}> \`${m.points}\``).join('\n'))
+			.setFooter(`Requested by ${message.author.username}`, message.author.avatarURL);
+			message.channel.send({
+				embed: pointsTop
+			});
+		}else if(args[1] == 'reset') {
+			let pointsReset = new Discord.RichEmbed()
+			.setDescription('**:white_check_mark: | تم تصفير جميع النقاظ بنجاح**')
+			.setFooter('Requested by '+message.author.username, message.author.avatarURL)
+			if(!message.member.hasPermission('MANAGE_GUILD')) return err(message, "You dont have Manage Server permission.");
+			if(!points) return message.channel.send(pointsReset);
+			var members = Object.values(points);
+			var memb = members.filter(m => m.points >= 1);
+			if(memb.length == 0) return message.channel.send(pointsReset);
+			points = {};
+			message.channel.send(pointsReset);
+		}else if(userM) {
+			if(!message.member.hasPermission('MANAGE_GUILD')) return err(message, "You dont have Manage Server permission.");
+			if(!points[userM.user.id]) points[userM.user.id] = {
+				points: 0,
+				id: userM.user.id
+			};
+			if(!args[2]) {
+				if(points[userM.user.id].points == 0) return err(message, `${userM.user.username} Not have any points.`);
+				var userPoints = new Discord.RichEmbed()
+				.setColor('#d3c325')
+				.setAuthor(`${userM.user.username} have ${points[userM.user.id].points} points.`);
+				message.channel.send({
+					embed: userPoints
+				});
+			}else if(args[2] == 'reset') {
+				if(points[userM.user.id].points == 0) return message.channel.send(error);
+				points[userM.user.id].points = 0;
+				message.channel.send(`Successfully reset ${userM.user.username} points.`);
+			}else if(args[2].startsWith('+')) {
+				args[2] = args[2].slice(1);
+				args[2] = parseInt(Math.floor(args[2]));
+				if(points[userM.user.id].points == 1000000) return message.channel.send(error);
+				if(!args[2]) return message.channel.send(error);
+				if(isNaN(args[2])) return message.channel.send(error);
+				if(args[2] > 1000000) return message.channel.send(error);
+				if(args[2] < 1) return message.channel.send(error);
+				if((points[userM.user.id].points + args[2]) > 1000000) args[2] = 1000000 - points[userM.user.id].points;
+				points[userM.user.id].points += args[2];
+				let add = new Discord.RichEmbed()
+				.setDescription(`**:small_blue_diamond:** <@${userM.id}> \`${points[userM.user.id].points}\``)
+				.setAuthor('Points:')
+				.setColor('#FBFBFB')
+				.setFooter('Requested by' + message.author.username, message.author.avatarURL)
+				message.channel.send(add);
+			}else if(args[2].startsWith('-')) {
+				args[2] = args[2].slice(1);
+				args[2] = parseInt(Math.floor(args[2]));
+				if(points[userM.user.id].points == 0) return message.channel.send(error);
+				if(!args[2]) return message.channel.send(error);
+				if(isNaN(args[2])) return message.channel.send(error);
+				if(args[2] > 1000000) return message.channel.send(error);
+				if(args[2] < 1) return message.channel.send(error);
+				if((points[userM.user.id].points - args[2]) < 0) args[2] = points[userM.user.id].points;
+				points[userM.user.id].points -= args[2];
+					let rem = new Discord.RichEmbed()
+				.setDescription(`**:small_blue_diamond:** <@${userM.id}> \`${points[userM.user.id].points}\``)
+				.setAuthor('Points:')
+				.setColor('#FBFBFB')
+				.setFooter('Requested by' + message.author.username, message.author.avatarURL)
+				message.channel.send(rem);
+			}else if(!args[2].startsWith('+') || !args[2].startsWith('-')) {
+				args[2] = parseInt(Math.floor(args[2]));
+				if(isNaN(args[2])) return message.channel.send(error);
+				if(args[2] > 1000000) return message.channel.send(error);
+				if(args[2] < 1) return message.channel.send(error);
+				if(points[userM.user.id].points == args[2]) return err(message, `${userM.user.username} points is already ${args[2]}.`);
+				points[userM.user.id].points = args[2];
+					let set = new Discord.RichEmbed()
+				.setDescription(`**:small_blue_diamond:** <@${userM.id}> \`${points[userM.user.id].points}\``)
+				.setAuthor('Points:')
+				.setColor('#FBFBFB')
+				.setFooter('Requested by' + message.author.username, message.author.avatarURL)
+				message.channel.send(set);
+			}
+			}
+			}
 });
- 
- 
-client.on("channelCreate",  channel => {
-  if(!logs[channel.guild]) return;
-  const c = channel.guild.channels.find("name", logs[channel.guild.id].channelName);
-if(!c) return;
-  if(c) {
-    var emoji;
-    if(channel.type === 'text') emoji = ':speech_balloon:| Text';
-    if(channel.type === 'voice') emoji = ':microphone:| Voice';
-    if(channel.type === 'category') emoji = ':books:| Category';
-    channel.guild.fetchAuditLogs({
-      limit: 1,
-      type: 10
-    }).then(audit => {
-      var e = audit.entries.map(a => a.executor.username);
-      var cReate = new Discord.RichEmbed()
-      .setTitle('New room created')
-      .setAuthor(audit.entries.map(e => e.executor.tag), channel.guild.iconURL)
-      .setColor('GREEN')
-      .addField('» Room Name:', channel.name,true)
-      .addField('» By:',e,true)
-      .addField('» Type:', emoji, true)
-      .setFooter(`v0.1 | Logs.`)
-      .setTimestamp();
-      c.send(cReate);
-    });
-  } else {
-    return;
-  }
-});
-client.on('channelDelete', channel => {
-  if(!logs[channel.guild.id]) return;
-  const c = channel.guild.channels.find("name", logs[channel.guild.id].channelName);
-if(!c) return;
-  if(c) {
-    channel.guild.fetchAuditLogs({
-      limit: 1,
-      type: 12
-    }).then(audit => {
-      var e = audit.entries.map(a => a.executor.username);
-      var cDelete = new Discord.RichEmbed()
-      .setTitle('Room Deleted')
-      .setAuthor(audit.entries.map(e => e.executor.tag), channel.guild.iconURL)
-      .setColor('RED')
-      .addField('» Room Name:', channel.name,true)
-      .addField('» By:',e,true)
-      .setFooter(`v0.1 | Logs.`)
-      .setTimestamp();
-      c.send(cDelete);
-    });
-  } else {
-    return;
-  }
-});
-client.on('guildBanAdd', (guild, member) => {
-  if(!logs[member.guild]) return;
-  const c = guild.channels.find("name", logs[guild.id].channelName);
-  if(!c) return;
-  if(c) {
-    guild.fetchAuditLogs({
-      limit: 1,
-      type: 22
-    }).then(audit => {
-      var e = audit.entries.map(a => a.executor.username);
-      var bEmbed = new Discord.RichEmbed()
-      .setTitle('New Ban')
-      .setAuthor(audit.entries.map(e => e.executor.tag), guild.iconURL)
-      .setColor('RED')
-      .addField('» User:', `**${member.tag}**`,true)
-      .addField('» Moderator:', `**${e}**`,true)
-      .setFooter(`v0.1 | Logs.`)
-      .setTimestamp();
-      c.send(bEmbed);
-    });
-  } else {
-    return;
-  }
-});
-client.on('guildBanRemove', (guild, member) => {
-  if(!logs[guild.id]) return;
-  const c = guild.channels.find('name', logs[guild.id].channelName);
-  if(!c) return;
-  if(c) {
-    guild.fetchAuditLogs({
-      limit: 1,
-      type: 23
-    }).then(audit => {
-      var e = audit.entries.map(a => a.executor.username);
-      var gEmbed = new Discord.RichEmbed()
-      .setTitle('New UnBan')
-      .setAuthor(audit.entries.map(e => e.executor.tag), guild.iconURL)
-      .setColor('GREEN')
-      .addField('» User:', `**${member.tag}**`,true)
-      .addField('» Moderator:', `**${e}**`,true)
-      .setFooter(`v0.1 | Logs.`)
-      .setTimestamp();
-      c.send(gEmbed);
-    });
-  } else {
-    return;
-  }
-});
-client.on('guildMemberAdd', member => {
-  if(!logs[member.guild.id]) return;
-  const c = member.guild.channels.find('name', logs[member.guild.id].channelName) || member.guild.channels.get(logs[member.guild.id].channelId);
-  if(!c) return;
-  if(c) {
-    var wEmbed = new Discord.RichEmbed()
-    .setAuthor(member.user.username, member.user.avatarURL)
-    .setTitle('New Member')
-    .setColor('GREEN')
-    .setThumbnail(member.user.avatarURL)
-    .addField('» Member:', member,true)
-    .addField('» Member Count:', member.guild.memberCount,true)
-    .setFooter('v0.1 | Logs.')
-    .setTimestamp();
-    c.send(wEmbed);
-  } else {
-    return;
-  }
-});
-client.on('guildMemberRemove', member => {
-  if(!logs[member.guild.id]) return;
-  const c = member.guild.channels.find('name', logs[member.guild.id].channelName);
-  if(!c) return;
-  if(c) {
-    var lEmbed = new Discord.RichEmbed()
-    .setAuthor(member.user.username, member.user.avatarURL)
-    .setTitle('Member Leave')
-    .setColor('RED')
-    .setThumbnail(member.user.avatarURL)
-    .addField('» Member:', member.user.tag,true)
-    .addField('» Member Count:',member.guild.memberCount,true)
-    .setFooter('v0.1 | Logs.')
-    .setTimestamp();
-    c.send(lEmbed);
-  } else {
-    return;
-  }
-});
-client.on('messageDelete', message => {
-  if(!logs[message.guild.id]) return;
-   const c = message.guild.channels.find('name', logs[message.guild.id].channelName);
-   if(!c) return;
-   if(c) {
-     if(!message || !message.id || !message.content || !message.guild || message.author.bot) return;
-     var mEmbed = new Discord.RichEmbed()
-     .setTitle(`🗑 ${message.author.tag} Deleted Message .`)
-     .setColor('BLACK')
-     .setThumbnail(message.author.avatarURL)
-     .setDescription(`\`\`\`${message.cleanContent.replace('`', '\`')}\`\`\``)
-     .addField('» User:',message.author,true)
-     .addField('» In:',message.channel,true)
-     .setFooter('v0.1 | Logs.')
-     .setTimestamp();
-     c.send(mEmbed);
-   } else {
-     return;
-   }
-});
-client.on('messageUpdate', (old, message) => {
-  try {
-    if(!logs[message.guild.id]) return;
-  const c = message.guild.channels.get(logs[message.guild.id].channelId);
-  if(c) {
-    if (!message || !message.id || !message.content || !message.guild || message.author.bot || message.content === old.content) return;
-    var editedEmbed = new Discord.RichEmbed()
-    .setTitle(`✏ ${message.author.tag} Edited Message .`)
-    .setColor('BLACK')
-    .setThumbnail(message.author.avatarURL)
-    .setDescription(`Old Message : \`\`\`${old.cleanContent || old.content}\`\`\`\nNew Message : \`\`\`${message.cleanContent || message.content}\`\`\``)
-    .addField('» User:', message.author,true)
-    .addField('» In:', message.channel, true)
-    .setFooter('v0.1 | Logs.')
-    .setTimestamp();
-    c.send(editedEmbed);
-  }
-  } catch(e) {
-    if(e) return null;
-  }
-});
+
 
 client.login(process.env.BOT_TOKEN);
