@@ -5,6 +5,8 @@ const prefix = "$";
 const fs = require('fs');
 const ms = require('ms');
 const moment = require('moment');
+var cds = new Set();
+var cdv = new Set();
  const auto = require('./autoMessage.json');
 client.on('message',async message => {
     var msg;
