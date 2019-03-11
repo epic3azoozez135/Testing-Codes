@@ -321,7 +321,7 @@ let vipKeys = JSON.parse(fs.readFileSync("./vipKeys.json", "utf8"));
 client.on("message", msg=>{
 let id = "462038057529507841"; // ايديك
 let role = "V.I.P"; // اسم رتبة الفيب
-let Price = 15; // السعر
+let Price = 1500; // السعر
 let Price2 = Math.floor(Price-(Price*(1/100)));
 if(!Price || Price < 1) return;
 let cmd = msg.content.split(' ')[0];
