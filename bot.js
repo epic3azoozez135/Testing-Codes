@@ -378,7 +378,7 @@ msg.channel.send(`كردت بروبوت\`${Price}\` لديك 4 دقائق لتح
 })})})
 ///
 }
-if(cmd === `${prefix}used`){
+if(cmd === `${prefix}use`){
   let args = msg.content.split(" ").slice(1)[0];
   if(!args) {   
     let embed = new Discord.RichEmbed()
