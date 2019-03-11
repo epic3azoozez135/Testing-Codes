@@ -459,7 +459,7 @@ if (message.member.voiceChannel == null) return;
  message.guild.members.filter(m=>m.voiceChannel).forEach(m => {
  m.setVoiceChannel(author)
  })
- message.channel.send('\`Moved All Voice Members To Your Channel\`').then(m => m.delete(4000))
+ message.channel.send('\`تم سحب الجميع الى رومك\`').then(m => m.delete(4000))
  }
    });
 
