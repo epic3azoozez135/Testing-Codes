@@ -25,9 +25,9 @@ client.on('message',async function(message) {
       darkred = '#990303',
       darkorange = '#996103'
   if(message.content.startsWith(prefix + "setcolor")) {
-    if(!message.member.hasPermission("MANAGE_ROLES_OR_PERMISSIONS")) return message.channel.send(`**:heavy_multiplication_x: | You dont have permissions**`);
-    if(!message.guild.me.hasPermission('MANAGE_ROLES_OR_PERMISSIONS') || !message.guild.member(client.user).hasPermission('MANAGE_ROLES_OR_PERMISSIONS')) return message.channel.send(`**:heavy_multiplication_x: | The Bot must have permissions**`);
-    if(!editRole) return message.channel.send(`**:milky_way:| Mention role!**`);
+    if(!message.member.hasPermission("MANAGE_ROLES_OR_PERMISSIONS")) return message.channel.send(`**:heavy_multiplication_x: | ليس لديك الصلاحيات الكافية**`);
+    if(!message.guild.me.hasPermission('MANAGE_ROLES_OR_PERMISSIONS') || !message.guild.member(client.user).hasPermission('MANAGE_ROLES_OR_PERMISSIONS')) return message.channel.send(`**:heavy_multiplication_x: | ليس لدي الصلاحيات لفعل هذا**`);
+    if(!editRole) return message.channel.send(`**منشن رتبة لتـغير لونها **`);
     if(!args[2]) {
       let codes = [black, white, lime, blue, purple, pink, red, orange, milky, darkgreen, darkblue, darkpurple, darkpink, darkred, darkorange];
       let colors = new Discord.RichEmbed()
@@ -42,92 +42,92 @@ client.on('message',async function(message) {
 
     if(args[2] && color === 'white') {
       editRole.edit({color: white}).then(function(done, err) {
-        if(err) return message.channel.send(`**:heavy_multiplication_x: | Error**`);
-        if(!err) return message.channel.send(`**:ballot_box_with_check: | Done**`);
+        if(err) return message.channel.send(`**:heavy_multiplication_x: | يوجد خطأ !**`);
+        if(!err) return message.channel.send(`**:ballot_box_with_check: | تم تغير لون الرتبة**`);
       });
     }
     if(args[2] && color === 'black') {
       editRole.edit({color: black}).then(function(done, err) {
-        if(err) return message.channel.send(`**:heavy_multiplication_x: | Error**`);
-        if(!err) return message.channel.send(`**:ballot_box_with_check: | Done**`);
+        if(err) return message.channel.send(`**:heavy_multiplication_x: | يوجد خطأ !**`);
+        if(!err) return message.channel.send(`**:ballot_box_with_check: | تم تغير لون الرتبة**`);
       });
     }
     if(args[2] && color === 'lime') {
       editRole.edit({color: lime}).then(function(done, err) {
-        if(!err) return message.channel.send(`**:ballot_box_with_check: | Done**`);
-      }).catch(e => message.channel.send(`**:heavy_multiplication_x: | Error**`));
+        if(!err) return message.channel.send(`**:ballot_box_with_check: | تم تغير لون الرتبة**`);
+      }).catch(e => message.channel.send(`**:heavy_multiplication_x: | يوجد خطأ !**`));
     }
     if(args[2] && color === 'blue') {
       editRole.edit({color: blue}).then(function(done, err) {
-        if(err) return message.channel.send(`**:heavy_multiplication_x: | Error**`);
-        if(!err) return message.channel.send(`**:ballot_box_with_check: | Done**`);
-      }).catch(e => message.channel.send(`**:heavy_multiplication_x: | Error**`));
+        if(err) return message.channel.send(`**:heavy_multiplication_x: | يوجد خطأ !**`);
+        if(!err) return message.channel.send(`**:ballot_box_with_check: | تم تغير لون الرتبة**`);
+      }).catch(e => message.channel.send(`**:heavy_multiplication_x: | يوجد خطأ !**`));
     }
     if(args[2] && color === 'purple') {
       editRole.edit({color: purple}).then(function(done, err) {
-        if(err) return message.channel.send(`**:heavy_multiplication_x: | Error**`);
-  if(!err) return message.channel.send(`**:ballot_box_with_check: | Done**`);
-      }).catch(e => message.channel.send(`**:heavy_multiplication_x: | Error**`));
+        if(err) return message.channel.send(`**:heavy_multiplication_x: | يوجد خطأ !**`);
+  if(!err) return message.channel.send(`**:ballot_box_with_check: | تم تغير لون الرتبة**`);
+      }).catch(e => message.channel.send(`**:heavy_multiplication_x: | يوجد خطأ !**`));
     }
     if(args[2] && color === 'pink') {
       editRole.edit({color: pink}).then(function(done, err) {
-        if(err) return message.channel.send(`**:heavy_multiplication_x: | Error**`);
-        if(!err) return message.channel.send(`**:ballot_box_with_check: | Done**`);
-      }).catch(e => message.channel.send(`**:heavy_multiplication_x: | Error**`));
+        if(err) return message.channel.send(`**:heavy_multiplication_x: | يوجد خطأ !**`);
+        if(!err) return message.channel.send(`**:ballot_box_with_check: | تم تغير لون الرتبة**`);
+      }).catch(e => message.channel.send(`**:heavy_multiplication_x: | يوجد خطأ !**`));
     }
     if(args[2] && color === 'red') {
       editRole.edit({color: red}).then(function(done, err) {
-        if(err) return message.channel.send(`**:heavy_multiplication_x: | Error**`);
-        if(!err) return message.channel.send(`**:ballot_box_with_check: | Done**`);
-      }).catch(e => message.channel.send(`**:heavy_multiplication_x: | Error**`));
+        if(err) return message.channel.send(`**:heavy_multiplication_x: | يوجد خطأ !**`);
+        if(!err) return message.channel.send(`**:ballot_box_with_check: | تم تغير لون الرتبة**`);
+      }).catch(e => message.channel.send(`**:heavy_multiplication_x: | يوجد خطأ !**`));
     }
     if(args[2] && color === 'orange') {
       editRole.edit({color: orange}).then(function(done, err) {
-        if(err) return message.channel.send(`**:heavy_multiplication_x: | Error**`);
-        if(!err) return message.channel.send(`**:ballot_box_with_check: | Done**`);
-      }).catch(e => message.channel.send(`**:heavy_multiplication_x: | Error**`));
+        if(err) return message.channel.send(`**:heavy_multiplication_x: | يوجد خطأ !**`);
+        if(!err) return message.channel.send(`**:ballot_box_with_check: | تم تغير لون الرتبة**`);
+      }).catch(e => message.channel.send(`**:heavy_multiplication_x: | يوجد خطأ !**`));
     }
     if(args[2] && color === 'milky') {
       editRole.edit({color: milky}).then(function(done, err) {
-        if(err) return message.channel.send(`**:heavy_multiplication_x: | Error**`);
-        if(!err) return message.channel.send(`**:ballot_box_with_check: | Done**`);
+        if(err) return message.channel.send(`**:heavy_multiplication_x: | يوجد خطأ !**`);
+        if(!err) return message.channel.send(`**:ballot_box_with_check: | تم تغير لون الرتبة**`);
       }).catch(e => message.channel.send(`**:heavy_multiplication_x: | Error**`));
     }
     if(args[2] && color === 'darkgreen') {
       editRole.edit({color: darkgreen}).then(function(done, err) {
-        if(err) return message.channel.send(`**:heavy_multiplication_x: | Error**`);
-        if(!err) return message.channel.send(`**:ballot_box_with_check: | Done**`);
-      }).catch(e => message.channel.send(`**:heavy_multiplication_x: | Error**`));
+        if(err) return message.channel.send(`**:heavy_multiplication_x: | يوجد خطأ !**`);
+        if(!err) return message.channel.send(`**:ballot_box_with_check: | تم تغير لون الرتبة**`);
+      }).catch(e => message.channel.send(`**:heavy_multiplication_x: | يوجد خطأ !**`));
     }
     if(args[2] && color === 'darkblue') {
       editRole.edit({color: darkblue}).then(function(done, err) {
-        if(err) return message.channel.send(`**:heavy_multiplication_x: | Error**`);
-        if(!err) return message.channel.send(`**:ballot_box_with_check: | Done**`);
-      }).catch(e => message.channel.send(`**:heavy_multiplication_x: | Error**`));
+        if(err) return message.channel.send(`**:heavy_multiplication_x: | يوجد خطأ !**`);
+        if(!err) return message.channel.send(`**:ballot_box_with_check: | تم تغير لون الرتبة**`);
+      }).catch(e => message.channel.send(`**:heavy_multiplication_x: | يوجد خطأ !**`));
     }
     if(args[2] && color === 'darkred') {
       editRole.edit({color: darkred}).then(function(done, err) {
-        if(err) return message.channel.send(`**:heavy_multiplication_x: | Error**`);
-        if(!err) return message.channel.send(`**:ballot_box_with_check: | Done**`);
-      }).catch(e => message.channel.send(`**:heavy_multiplication_x: | Error**`));
+        if(err) return message.channel.send(`**:heavy_multiplication_x: | يوجد خطأ !**`);
+        if(!err) return message.channel.send(`**:ballot_box_with_check: | تم تغير لون الرتبة**`);
+      }).catch(e => message.channel.send(`**:heavy_multiplication_x: | يوجد خطأ !**`));
     }
     if(args[2] && color === 'darkpink') {
       editRole.edit({color: darkpink}).then(function(done, err) {
-        if(err) return message.channel.send(`**:heavy_multiplication_x: | Error**`);
-        if(!err) return message.channel.send(`**:ballot_box_with_check: | Done**`);
-      }).catch(e => message.channel.send(`**:heavy_multiplication_x: | Error**`));
+        if(err) return message.channel.send(`**:heavy_multiplication_x: | يوجد خطأ !**`);
+        if(!err) return message.channel.send(`**:ballot_box_with_check: | تم تغير لون الرتبة**`);
+      }).catch(e => message.channel.send(`**:heavy_multiplication_x: | يوجد خطأ !**`));
     }
     if(args[2] && color === 'darkpurple') {
       editRole.edit({color: darkpurple}).then(function(done, err) {
-        if(err) return message.channel.send(`**:heavy_multiplication_x: | Error**`);
-        if(!err) return message.channel.send(`**:ballot_box_with_check: | Done**`);
-      }).catch(e => message.channel.send(`**:heavy_multiplication_x: | Error**`));
+        if(err) return message.channel.send(`**:heavy_multiplication_x: | يوجد خطأ !**`);
+        if(!err) return message.channel.send(`**:ballot_box_with_check: | تم تغير لون الرتبة**`);
+      }).catch(e => message.channel.send(`**:heavy_multiplication_x: | يوجد خطأ !**`));
     }
     if(args[2] && color === 'darkorange') {
       editRole.edit({color: darkorange}).then(function(done, err) {
-        if(err) return message.channel.send(`**:heavy_multiplication_x: | Error**`);
-        if(!err) return message.channel.send(`**:ballot_box_with_check: | Done**`);
-      }).catch(e => message.channel.send(`**:heavy_multiplication_x: | Error**`));
+        if(err) return message.channel.send(`**:heavy_multiplication_x: | يوجد خطأ !**`);
+        if(!err) return message.channel.send(`**:ballot_box_with_check: | تم تغير لون الرتبة**`);
+      }).catch(e => message.channel.send(`**:heavy_multiplication_x: | يوجد خطأ !**`));
     }
   }
 });
