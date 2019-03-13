@@ -520,7 +520,7 @@ client.on('voiceStateUpdate', (oldMember , newMember) => {
                         let ch = vojson[oldMember.guild.id].chid
                         let channel = oldMember.guild.channels.get(ch)
                         let guildid = vojson[oldMember.guild.id].guild
-                        channel.setName(`VoiceOnline: ${oldMember.guild.members.filter(m => m.voiceChannel).size}`)
+                        channel.setName(`In Rooms : [ ${oldMember.guild.members.filter(m => m.voiceChannel).size} ]`)
                     };
                     if (vojson[oldMember.guild.id].stats === 'disable') {
                     return;
