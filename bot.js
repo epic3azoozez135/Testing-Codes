@@ -480,8 +480,7 @@ if (message.member.voiceChannel == null) return;
    });
 
 
-
- const category = "555404118664151050";
+const category = "555404118664151050";
 const devs     = ["462038057529507841"];
 let mtickets   = true;
 let tchannels  = [];
@@ -489,7 +488,7 @@ let current    = 0;
  
  
 client.on('message',async message => {
-    const emojis   = { yes: `${client.guilds.find(r => r.id === '555404287828688903').emojis.find(e => e.name === 'Yes')}`, wrong: `${client.guilds.find(r => r.id === '555405849388908574').emojis.find(e => e.name === 'Wrong')}` };
+    const emojis   = { yes: `${client.guilds.find(r => r.id === '555408704590053416').emojis.find(e => e.name === 'Yes')}`, wrong: `${client.guilds.find(r => r.id === '555408861792829440').emojis.find(e => e.name === 'Wrong')}` };
     if(message.author.bot || message.channel.type === 'dm') return;
     let args = message.content.split(" ");
     let author = message.author.id;
