@@ -488,7 +488,7 @@ let current    = 0;
  
  
 client.on('message',async message => {
-    const emojis   = { yes: `${client.guilds.find(r => r.id === '555408704590053416').emojis.find(e => e.name === 'Yes')}`, wrong: `${client.guilds.find(r => r.id === '555408861792829440').emojis.find(e => e.name === 'Wrong')}` };
+    const emojis   = { yes: `${client.guilds.find(r => r.id === '<:yes:548071678039818241>').emojis.find(e => e.name === 'Yes')}`, wrong: `${client.guilds.find(r => r.id === '<:Wrong:555410163297681418>').emojis.find(e => e.name === 'Wrong')}` };
     if(message.author.bot || message.channel.type === 'dm') return;
     let args = message.content.split(" ");
     let author = message.author.id;
