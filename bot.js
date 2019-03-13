@@ -492,7 +492,7 @@ chid: channelfind.id,
 guild: message.guild.id
  
 }
-channelfind.setName(`VoiceOnline: ${message.guild.members.filter(m => m.voiceChannel).size}`)
+channelfind.setName(`In Rooms : [ ${message.guild.members.filter(m => m.voiceChannel).size} ]`)
 message.channel.send('**Done The Voice Online  Is Turned On**')
 }
     if(message.content.startsWith(prefix + "vc off")) {
